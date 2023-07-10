@@ -1,29 +1,26 @@
-1.解题思路1:
-  遍历整个数组，每次获得一个数组的时候，判断一下另外的一个数(target - nums[i])在不在，用hash表保存下来
+1.解题思路:
+  当两个数满足num1 + num2 = target时，一定有一个在前，一个在后，如 Index_num1 < Index_num2，故只要遍历数组，将遍历过的保存起来，每次保存的时候查找一下另外一个target - num是否存在即可。
 
-
-2.解题思路2:
-  略
-
-
-代码1：
 
 class Solution {
 public:
 	vector<int> twoSum(vector<int>& nums, int target) {
-		unordered_map<int, int> vmap;
-				
-		for (int i = 0; i < nums.size(); i++) {
+		vector<int> result;
+		
+		unordered_map<int, int> map;
+		map[nums[0]] = 0;
 
-			if (vmap.find(target - nums[i]) != vmap.end()) {
-				return {vmap[target - nums[i]], i};
+		for (int i = 1; i < nums.size(); i++) {
+			if (map.find(target - nums[i]) != map.end()) {
+				result.push_back(map[target - nums[i]]);
+				result.push_back(i);
+				break;
+			}else {
+				map[nums[i]] = i;
 			}
-			
-			vmap[nums[i]] = i;
 
 		}
 
-		return {};
-    }
-
+		return result;
+	}
 };
