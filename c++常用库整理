@@ -1,1 +1,154 @@
+迭代器:
+  以set为例:
+  set<int> a = {1, 2, 3};
+  set<int>::iterator it = a.begin(); 
+  it++;  
+  if (it != a.end()) {
+    ...
+  }
+  *it; // 元素本身，it为迭代器，*it为对迭代器的引用。
+
+vector的使用:
+  #include <vector>
+  vector<elemType> v;
+
+  for (int i = 0; i < v.size(); i++) {
+    cout << v[i] << endl;
+  }
+  v.push_back(e);
+  v.pop_back(e);
+  v.clear() // 清空 O(1)
+
+string的使用:
+  #include <string>
+  string s; // 等价于 char chr[] = "abc"; string s(chr);
+  访问，遍历方式同vector;
+
+  s.find("bc")// 查找子串 O(n), 可以自己写KMP算法
+  s.substr(index) 或 s.substr(index, length) // 截取子串
+  s.replace(index, length, "abc"); // 替换子串
+
+  string s = to_string(int); // 转成字符串
+  int num = stoi(s); // 转成数字，类似的还有stol, stof, stod等等
+
+  整行读入:
+  while (getline(cin, s)) { cout << s << endl; } 
+
+栈的使用:
+  #include <stack>
+  stack<int> st;
+  st.size();
+  st.push();
+  st.pop();
+  st.top(); // 返回的是引用
+  st.empty();
+   
+队列的使用:
+  #include <queue>
+  queue<int> q;
+  q.push();
+  q.pop();
+  q.front();
+  q.back();
+  
+优先级队列的使用(当做堆来使用):
+  #include <queue>
+  priority_queue<int> heap;
+  priority_queue<int, vector<int>, greater<int>> heap; // 小项堆
+  自己定义的结构，重写小于符号:
+  struct own {
+    int x;
+    bool operator< (const own& j) const {
+      if (this->x > j.x) {
+        return true;
+      }
+      return false;
+    } 
+  }
+
+  push和pop都是从堆定顶操作。top也是。empty同上。
+
+pair的使用:
+  pair<int, string> p; // map返回的就是pair对象
+  p.first;  // 第一个元素
+  p.second; // 第二个元素
+
+set的使用(元素唯一):
+  #include <set>
+  set<int> s;
+  for (int n : s) {
+    ...
+  }
+  s.insert(n); // 插入元素， 返回值为pair类型  <iterator, bool> 可通过第二个判断是否被插入成功a
+  s.erase(n); 
+  s.empty();
+  s.size();
+  s.count(n); // 获取某个元素个数，由于唯一，可判断元素是否存在
+  s.clear();
+  s.lower_bound(n); // 返回小于等于指定元素的引用
+  s.upper_bound(n); // 返回大于等于指定元素的引用
+  
+unorderer_set使用(前面的set有排序，这个不排序，内部原理是hash, 性能有提升):
+  #include <unordered_set>
+  其他几乎和set一样的。
+
+multiset的使用:
+  允许有重复元素，使用同set
+
+map( 内部使用红黑树进行实现, 插入，查找，修改都是log(n)):
+  #include <map>
+  map<string, int> mp;
+  mp.intsert(pair<string, int>("abc", 6));
+  mp["acd"] = 3; // 如果存在，则修改，如果不存在，则新增
+  mp.erase("acd"); // 擦除
+  for(pair<string, int> : mp) { ... }
+  if (mp.find("acd") != mp.end()) // 需要先判空，才能修改，不然会新增
+
+
+unorderer_map的使用:
+  #include <unorderer_map>
+  使用同上
+
+bitset使用:
+  #include <bitset>
+  bitset<10> b; // 声明10位
+  b[2] = 0;     // 可以看成bool数组，或二进制字符串等。
+
+deque的使用(双端队列):
+  #include <deque>
+  push_front / pop_front // 头部插入删除
+  push_back / pop_back   // 尾部插入删除
+
+算法:
+1. sort
+  bool cmp(int a, int b) {
+    return a > b;
+  }
+
+  sort(arr, arr+10. cmp); // 默认升序，这边可以用自己的排序方式，这里是降序  排序范围[0, 10)
+  sort(vector.begin(), vector.end(), cmp);
+
+2.min和max // min({1, 2, 3}) 返回值最大值最小值
+
+3.abs // ans(-3) 返回绝对值
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
