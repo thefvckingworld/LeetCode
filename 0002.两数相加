@@ -1,9 +1,110 @@
 解题思路:
-
-
+  模拟法: 模拟加法相加的过程, 复杂度O(MAX(m, n))
+  
 
 
 
 代码:
-  
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+
+		ListNode *p1 = l1;
+		ListNode *p2 = l2;
+
+		ListNode *resultHead = nullptr;
+		ListNode *q = resultHead;
+
+
+		int carry = 0;  // 进位
+		while (p1 != nullptr && p2 != nullptr) {
+			
+			ListNode *temp = new ListNode((p1->val + p2->val + carry) % 10, nullptr);
+			carry = ((p1->val + p2->val + carry) / 10);
+
+			if (resultHead == nullptr) {
+				resultHead = temp;
+				q = resultHead;
+			}
+			else {
+				q->next = temp;
+				q = temp;
+			}
+
+			p1 = p1->next;
+			p2 = p2->next;
+
+		}
+
+		if (p1 == nullptr && p2 == nullptr && carry == 1) {
+			ListNode *temp = new ListNode(1, nullptr);
+			if (resultHead == nullptr) {
+				resultHead = temp;
+				q = resultHead;
+			}
+			else {
+				q->next = temp;
+				q = temp;
+			}
+		}
+		else if (p1 != nullptr && p2 == nullptr) {
+			while (p1 != nullptr) {
+				ListNode *temp = new ListNode((p1->val + carry) % 10, nullptr);
+				carry = ((p1->val + carry) / 10);
+				
+				if (resultHead == nullptr) {
+					resultHead = temp;
+					q = resultHead;
+				}
+				else {
+					q->next = temp;
+					q = temp;
+				}
+
+				p1 = p1->next;
+			}
+
+			if (carry == 1) {
+				ListNode *temp = new ListNode(1, nullptr);
+				q->next = temp;
+			}
+
+		}
+		else if (p1 == nullptr && p2 != nullptr) {
+			while (p2 != nullptr) {
+				ListNode *temp = new ListNode((p2->val + carry) % 10, nullptr);
+				carry = ((p2->val + carry) / 10);
+
+				if (resultHead == nullptr) {
+					resultHead = temp;
+					q = resultHead;
+				}
+				else {
+					q->next = temp;
+					q = temp;
+				}
+
+				p2 = p2->next;
+			}
+
+			if (carry == 1) {
+				ListNode *temp = new ListNode(1, nullptr);
+				q->next = temp;
+			}
+		}
+
+		return resultHead;
+	}
+};  
 
