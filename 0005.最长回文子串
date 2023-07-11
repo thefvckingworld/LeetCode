@@ -26,11 +26,6 @@ public:
 			return s.substr(0, 1);
 		}
 
-		if (s.length() == 2) {
-			if (s[0] == s[1]) return s;
-			else return s.substr(0, 1);
-		}
-
 		int maxLength = 1;
 		int maxBegin = 0;
 		int maxEnd = 0;
