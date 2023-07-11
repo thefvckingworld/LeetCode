@@ -1,5 +1,91 @@
-解题思路:
+解题思路1:
+  利用回文串性质: 单个字符肯定是回文串，然后由中心向两边扩散即可。遍历所有中心即可。
 
 
 
-代码:
+解题思路2:
+  利用回文串性质: 如果S[i, j]是一个回文串，则S[i+1, j -1]也是一个回文串，并且S[i] == S[j]
+  从以上性质可看出，这里其实有个最优子结构，可以利用动态规划了，基本的状态转移方程为:
+  dp[i][j] = dp[i + 1][j - 1] && s[i] == s[j]
+
+  然后注意下边界条件，填满dp[i][j]即可，然后找出j - i最大的dp[i][j]为true的即可。
+  
+
+
+
+代码1:
+  class Solution {
+public:
+	string longestPalindrome(string s) {
+
+		if (s.length() == 0) {
+			return "";
+		}
+
+		if (s.length() == 1) {
+			return s.substr(0, 1);
+		}
+
+		if (s.length() == 2) {
+			if (s[0] == s[1]) return s;
+			else return s.substr(0, 1);
+		}
+
+		int maxLength = 1;
+		int maxBegin = 0;
+		int maxEnd = 0;
+
+		for (int i = 0; i < s.length(); i++) {
+
+			int begin = i; 
+			int end = i;
+			int odd = getMaxSubString(s, i, begin, end); //奇数
+
+			if (maxLength < odd) {
+				maxLength = odd;
+				maxBegin = begin;
+				maxEnd = end;
+			}
+
+			begin = i; 
+			end = i + 1;
+			int even = getMaxSubString(s, i, begin, end); // 偶数
+			
+			if (maxLength < even) {
+				maxLength = even;
+				maxBegin = begin;
+				maxEnd = end;
+			}
+		}
+
+		return s.substr(maxBegin, maxEnd - maxBegin + 1);
+
+	}
+
+	int getMaxSubString(string s, int index, int& begin, int& end) {
+
+		int maxLength = 0;
+
+		int beginTemp = begin;
+		int endTemp = end;
+
+		while (beginTemp >= 0 && endTemp < s.length() && s[beginTemp] == s[endTemp]) {
+			maxLength = endTemp - beginTemp + 1;
+
+			begin = beginTemp;
+			end = endTemp;
+
+			beginTemp--;
+			endTemp++;
+		}
+
+		return maxLength;
+	}
+
+};
+
+
+
+
+
+代码2:
