@@ -11,8 +11,6 @@
   然后注意下边界条件，填满dp[i][j]即可，然后找出j - i最大的dp[i][j]为true的即可。
   
 
-
-
 代码1:
 class Solution {
 public:
@@ -80,7 +78,66 @@ public:
 };
 
 
-
-
-
 代码2:
+class Solution {
+public:
+	int maxLength = 1;
+	int resultBegin = 0;
+	int resultEnd = 0;
+
+	string longestPalindrome(string s) {
+
+		if (s.length() == 0) {
+			return "";
+		}
+
+		vector<vector<bool>> dp(s.length(), vector<bool>(s.length(), false));
+
+		// 这张二维表实际上遍历了所有的子串
+		for (int i = 0; i < s.length(); i++) {
+
+			// step 1: 所有单个节点就应当是一个回文串
+			dp[i][i] = true;
+
+			// step 1.5: 正常情况: dp[i][j] && s[i] == s[j] 推导dp[i - 1][j + 1], 实际是斜向上进行扩散
+			fillDp(dp, s, i - 1, i + 1);
+
+
+			// step 2: 例外情况: 如果是单个节点，则判断旁边是否为回文
+			int j = i + 1;
+			if (j < s.length() && s[i] == s[j]) {
+				if (maxLength < j - i + 1) {
+					maxLength = j - i + 1;
+					resultBegin = i;
+					resultEnd = j;
+				}
+				dp[i][j] = true;
+			}
+			else {
+				continue; // 如果是false，则不需要斜向上了
+			}
+
+			// step 2.5: 正常情况: dp[i][j] && s[i] == s[j] 推导dp[i - 1][j + 1], 实际是斜向上进行扩散
+			fillDp(dp, s, i - 1, j + 1);
+		}
+
+		return s.substr(resultBegin, resultEnd - resultBegin + 1);
+
+	}
+
+	void fillDp(vector <vector<bool>> &dp, string& s, int subBegin, int subEnd) {
+
+		while (subBegin >= 0 && subEnd < s.length()) {
+			dp[subBegin][subEnd] = dp[subBegin + 1][subEnd - 1] && s[subBegin] == s[subEnd];
+
+			if ((dp[subBegin][subEnd] == true) && (maxLength < subEnd - subBegin + 1)) {
+				maxLength = subEnd - subBegin + 1;
+				resultBegin = subBegin;
+				resultEnd = subEnd;
+			}
+
+			subBegin = subBegin - 1;
+			subEnd = subEnd + 1;
+		}
+	}
+};
