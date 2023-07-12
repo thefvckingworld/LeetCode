@@ -1,6 +1,55 @@
-解题思路:
-
-
+解题思路1:
+  利用二维矩阵模拟, 当然这题也可以直接构造，找到书序规律。
 
 代码:
+class Solution {
+public:
+	string convert(string s, int numRows) {
+		vector<vector<char>> zv(numRows);
 
+		if (numRows == 1) {
+			return s;
+		}
+
+		// 遍历s，模拟进行输出到vector, 其实如果只是讲求输出结果的顺序，可以忽略Z字符，相当于在二维数组中不停往复滑动，然后将s的字符填入
+		int p = 0; // 指向s;
+		int zvRow = 0; // 指向zv
+		int flag = 0; // 指示zvRow往复运动的方向 0 表示向下，1表示向上,碰到边界的时候，进行换向
+
+		while (p < s.length()) {
+			zv[zvRow].push_back(s[p]);
+			
+			if (flag == 0) {
+				zvRow++;
+			}
+			else if (flag == 1) {
+				zvRow--;
+			}
+
+			if (zvRow == numRows) {
+				flag = 1;
+				zvRow = zvRow - 2;
+			} 
+
+			if (zvRow == -1) {
+				flag = 0;
+				zvRow = zvRow + 2;
+			}
+			
+			p++;
+		}
+
+		// 遍历zv，进行结果输出
+		char *result = new char[s.length() + 1];
+		int result_index = 0;
+		for (int i = 0; i < zv.size(); i++) {
+			for (int j = 0; j < zv[i].size(); j++) {
+				result[result_index] = zv[i][j];
+				result_index++;
+			}
+		}
+		result[s.length()] = 0;
+		
+		return result;
+	}
+};
