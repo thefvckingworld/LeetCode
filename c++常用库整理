@@ -133,6 +133,7 @@ deque的使用(双端队列):
 
 3.abs // ans(-3) 返回绝对值
 
+4.limits头文件中含 INT_MIN INT_MAX等常量
 
 
 
