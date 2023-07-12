@@ -1,5 +1,25 @@
 提交记录:
-
+  回文就行。
 
 
 代码:
+class Solution {
+public:
+	bool isPalindrome(int x) {
+		long y = 0;
+
+        if (x < 0) {
+            return false;
+        }
+
+		int num = x;
+
+		while (num != 0) {
+			y = y * 10 + num % 10;
+			num /= 10;
+		}
+
+		return y == x;
+
+	}
+};
