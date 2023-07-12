@@ -1,0 +1,85 @@
+解题思路1:
+  按照给的思路进行实现即可，有一点需要注意的是，需要进行判断是否溢出。
+  为了与INT_MAX 和 INT_MIN比较大小，需要进行缩小，缩小的时候不要忘记还有余数的判断。
+  但是其实这题并没有限制使用long的，更简便的方式是将int类型使用long进行存储，然后进行溢出比较。
+
+代码:
+class Solution {
+public:
+	int myAtoi(string s) {
+		
+		int result = 0;
+		bool isPositive = true;
+
+		int p = 0;
+
+		// step 1: 丢弃前导空格
+		while (s[p] == ' ') {
+			p++;
+		}
+
+		if (p >= s.length()) {
+			return 0;
+		}
+
+		// step 2: 正负判断
+		if (s[p] == '-') {
+			isPositive = false;
+			p++;
+		}
+		else if (s[p] == '+') {
+			isPositive = true;
+			p++;
+		}
+		else {
+			isPositive = true;
+		}
+
+		if (p >= s.length()) {
+			return 0;
+		}
+		
+		// step 3: 读入数字
+		while (p < s.length() && s[p] >= '0' && s[p] <= '9') {
+		
+			// #define INT_MIN     (-2147483647 - 1) // minimum (signed) int value
+			// #define INT_MAX       2147483647    // maximum (signed) int value
+
+			bool isOverFlow = false;
+
+			// step a: 判断是否上溢:
+			if (result > (INT_MAX / 10)) {
+				isOverFlow = true;
+			}
+			else if (result == (INT_MAX / 10)){
+				if ((s[p] - '0') > INT_MAX % 10) {
+					isOverFlow = true;
+				}
+			}
+
+			if (isOverFlow) {
+				return INT_MAX;
+			}
+
+			// step b: 判断是否下溢
+			if (result < (INT_MIN / 10)) {
+				isOverFlow = true;
+			}
+			else if (result == (INT_MIN / 10)) {
+				if ((s[p] - '0') * -1 < (INT_MIN % 10)) {
+					isOverFlow = true;
+				}
+			}
+
+			if (isOverFlow) {
+				return INT_MIN;
+			}
+
+			result = result * 10 + (s[p] - '0') * (isPositive ? 1 : -1);
+			p++;
+		}
+
+
+		return result;
+	}
+};
