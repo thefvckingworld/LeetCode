@@ -11,6 +11,7 @@
 vector的使用:
   #include <vector>
   vector<elemType> v;
+  vector <vector<int>> dp(row, vector<int>(column, data)); // 初始化一个二维vector 
 
   for (int i = 0; i < v.size(); i++) {
     cout << v[i] << endl;
