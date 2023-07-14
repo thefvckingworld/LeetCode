@@ -50,15 +50,99 @@
             (3) [dp[i][j - 2] || (dp[i - 1][j] && s[i] == p[j - 1])]  &&  p[j] == '*'
 
   最后考虑实现上的问题, 尤其是边界条件, 综合考虑如下:
-        
-
-
+        1. 字符串需要考虑空串的情况
+        2. 虽然dp[0][0] 能表示s[0->0] 与 p[0->0]是否匹配的情况，且下标刚好一一对应，但是这样一来，就无法表示两个空串匹配的情况
+            所以，就需要考虑将s和p的字符映射到从1开始的下标，即dp[1][1] 表示s的第一个字符和p的第一个字符是否匹配。这样dp[0][0]就能表示空串了。
+        3. 显然dp[0][0]必然匹配
+        4. 因为考虑空串，所以dp[0][j] 和 dp[i][0]需要分别考虑(因为前面的分析推导都未考虑空串的情况)
+           显然dp[i][0] 肯定是false。dp[0][j], 如果p[j] != '*' 肯定dp[0][j] = false, 如果p[j] == '*', dp[0][j] = dp[0][j - 2]
+        5. 上述的状态转移方程中1和2可以合并, 后面的条件可以用一个函数，比如isMyEqual()来实现。
 
   遇到这种题目不要慌，耐心的一点一点分析下来，就能做出来。
   这题明显就是自顶向下分析，自底向上实现。
 
-
 代码:
+
+class Solution {
+public:
+	bool isMatch(string s, string p) {
+		
+		vector<vector<bool>> dp(s.length() + 1, vector<bool>(p.length() + 1, false));
+		
+		// 1.初始化空串情况、
+		dp[0][0] = true;
+
+		for (int i = 1; i < dp.size(); i++) {
+			dp[i][0] = false;
+		}
+
+		for (int j = 1; j < p.length() + 1; j++) {
+			if (p[j - 1] != '*') {
+				dp[0][j] = false;
+			}
+			else {
+				dp[0][j] = dp[0][j - 2];
+			}
+			
+		}
+
+		// 2.考虑
+		for (int i = 1; i < dp.size(); i++) {
+			for (int j = 1; j < dp[i].size(); j++) {
+				
+				int sCurrentCharIndex = i - 1;
+				int pCurrentCharIndex = j - 1;
+
+				if (p[pCurrentCharIndex] != '*') {
+					dp[i][j] = dp[i - 1][j - 1] && isMyEqual(s[sCurrentCharIndex], p[pCurrentCharIndex]);
+				}
+				else {
+
+					if (j - 2 >= 0) {
+						dp[i][j] = dp[i][j - 2];
+					}
+
+					if (pCurrentCharIndex >= 0 && isMyEqual(s[sCurrentCharIndex], p[pCurrentCharIndex - 1])) {
+						dp[i][j] = dp[i][j] || dp[i - 1][j];
+					}
+					
+				}
+			}
+		}
+
+		return dp[s.length()][p.length()];
+
+	}
+
+	bool isMyEqual(char sChar, char pChar) { // pChar必传入非星字符
+		if (pChar == '.' || sChar == pChar) {
+			return true;
+		}
+
+		return false;
+	}
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
