@@ -86,7 +86,7 @@ public:
 			
 		}
 
-		// 2.考虑
+		// 2.考虑一般情况
 		for (int i = 1; i < dp.size(); i++) {
 			for (int j = 1; j < dp[i].size(); j++) {
 				
