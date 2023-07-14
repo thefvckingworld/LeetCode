@@ -67,7 +67,6 @@
 class Solution {
 public:
 	bool isMatch(string s, string p) {
-		
 		vector<vector<bool>> dp(s.length() + 1, vector<bool>(p.length() + 1, false));
 		
 		// 1.初始化空串情况、
@@ -84,7 +83,6 @@ public:
 			else {
 				dp[0][j] = dp[0][j - 2];
 			}
-			
 		}
 
 		// 2.考虑一般情况
@@ -98,7 +96,6 @@ public:
 					dp[i][j] = dp[i - 1][j - 1] && isMyEqual(s[sCurrentCharIndex], p[pCurrentCharIndex]);
 				}
 				else {
-
 					if (j - 2 >= 0) {
 						dp[i][j] = dp[i][j - 2];
 					}
@@ -112,7 +109,6 @@ public:
 		}
 
 		return dp[s.length()][p.length()];
-
 	}
 
 	bool isMyEqual(char sChar, char pChar) { // pChar必传入非星字符
