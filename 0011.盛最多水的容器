@@ -8,6 +8,42 @@
   接着往下优化: 
 
 
-代码:
-  
+代码1(暴力解法，这段代码是能过的，做了一点优化，根据以上思路，但是还不是最优解法，本质还是O(n^2)):
+class Solution {
+public:
+	int maxArea(vector<int>& height) {
+
+		int maxS = 0;
+		int maxBegin = -1;
+		int maxEnd = -1;
+
+		for (int i = 0; i < height.size(); i++) {
+
+			if (maxBegin != -1 && height[i] <= height[maxBegin]) {
+				continue;
+			}
+
+			for (int j = i + 1; j < height.size(); j++) {
+
+				int minH = min(height[i], height[j]);
+
+				int s = minH * (j - i);
+
+				if (maxS < s) {
+					maxS = s;
+					maxBegin = i;
+					maxEnd = j;
+				}
+			}
+		}
+
+		return maxS;
+	}
+};
+
+
+代码2(最优解法,O(n)):
+
+
+
 
