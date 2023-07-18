@@ -1,5 +1,27 @@
 解题思路:
+  先列出各种情况的数字怎么表示。
+  1: I
+  2: II
+  3: III
+  4: IV
+  5: V
+  6: VI
+  7: VII
+  8: VIII
+  9: IX
+ 10: X
+ 40: XL
+ 50: L
+ 90: XC
+100: C
+400: CD
+500: D
+900: CM
+1000: M
 
+剩余的几十几百都是对应的进位叠加，比如20，就是 XX，
+
+然后进行模拟即可。  
 
 
 
@@ -8,9 +30,75 @@
 
 
 代码:
-  1.
-  2.
-  3.
+  class Solution {
+public:
+	string intToRoman(int num) {
+
+		string result = "";
+
+		unordered_map<int, string> romanNumMap;
+
+		mapInit(romanNumMap);
+
+		int a = num / 1000; // 取千位的数字个数
+		for (int i = 0; i < a; i++) {
+			result.append(romanNumMap[1000]);
+		}
+
+		a = (num % 1000 / 100); // 取百位的数字个数
+		if (romanNumMap.find(a * 100) != romanNumMap.end()) {
+			result.append(romanNumMap[a * 100]);
+		}
+		else {
+			for (int i = 0; i < a; i++) {
+				result.append(romanNumMap[100]);
+			}
+		}
+
+		a = (num % 100 / 10); // 取十位的数字个数
+		if (romanNumMap.find(a * 10) != romanNumMap.end()) {
+			result.append(romanNumMap[a * 10]);
+		}
+		else {
+			for (int i = 0; i < a; i++) {
+				result.append(romanNumMap[10]);
+			}
+		}
+
+		a = (num % 10 / 1); // 取个位的数字个数
+		result.append(romanNumMap[a]);
+	
+
+		return result;
+	}
+
+	void mapInit(unordered_map<int, string> &romanNumMap) {
+		romanNumMap[1] = "I";
+		romanNumMap[2] = "II";
+		romanNumMap[3] = "III";
+		romanNumMap[4] = "IV";
+		romanNumMap[5] = "V";
+		romanNumMap[6] = "VI";
+		romanNumMap[7] = "VII";
+		romanNumMap[8] = "VIII";
+		romanNumMap[9] = "IX";
+		romanNumMap[10] = "X";
+		romanNumMap[40] = "XL";
+		romanNumMap[50] = "L";
+		romanNumMap[60] = "LX";
+		romanNumMap[70] = "LXX";
+		romanNumMap[80] = "LXXX";
+		romanNumMap[90] = "XC";
+		romanNumMap[100] = "C";
+		romanNumMap[400] = "CD";
+		romanNumMap[500] = "D";
+		romanNumMap[600] = "DC";
+		romanNumMap[700] = "DCC";
+		romanNumMap[800] = "DCCC";
+		romanNumMap[900] = "CM";
+		romanNumMap[1000] = "M";
+	}
+};
 
 
 
