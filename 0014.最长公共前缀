@@ -1,5 +1,6 @@
 解题思路:
-
+  遍历所有字符串即可，不过遍历方式是，先遍历所有子串的第一个字符，再遍历所有子串的第二个字符。
+  且在性能上并没有恶化，且看数据量，也是OK的。
 
 
 
@@ -9,3 +10,30 @@
 
 
 代码:
+class Solution {
+public:
+	string longestCommonPrefix(vector<string>& strs) {
+
+		string result = "";
+
+		for (int p = 0; p < strs[0].length(); p++) {
+			
+			char c = strs[0][p];
+			
+			for (int i = 1; i < strs.size(); i++) {
+				if (p < strs[i].length() && c == strs[i][p]) {
+					continue;
+				}
+				else {
+					return result;
+				}
+			}
+
+			result.push_back(c);
+
+		}
+		
+		return result;
+
+	}
+};
