@@ -21,10 +21,51 @@
   比如当j确定的时候，k也确定了.
   现在假设进入一个最优解，下次遍历，必然从k处开始的，比k大的完全无需遍历。这里就可以看到可以用双指针法。从指向两端开始，不停的缩小范围。
   假设在一个有序数组内，j和k分别指向两端，如果两数之和小于，则j++, 大于则k--,这样必能遍历所有的组合。(其实前面0011题的时候，双指针已经应用过了，其实也是在有序数组中进行操作的)
-  
 
-
-
-
+  双指针的应用场景之一: 如果下一次的解在本次的解的范围基础上进一步去遍历，则可以应用双指针。 
 
 代码:
+class Solution {
+public:
+	vector<vector<int>> threeSum(vector<int>& nums) {
+
+		vector<vector<int>> result;
+
+		sort(nums.begin(), nums.end());
+
+		for (int first = 0; first < nums.size(); first++) {
+
+			if (first > 0 && nums[first] == nums[first - 1]) {
+				continue;
+			}
+
+			int second = first + 1;
+			int third = nums.size() - 1;
+
+			int target = 0 - nums[first];
+
+			while (second < third) {
+
+				
+
+				if (nums[second] + nums[third] > target) {
+					third--;
+				}
+				else if (nums[second] + nums[third] < target) {
+					second++;
+				}
+				else {
+					result.push_back({ nums[first], nums[second], nums[third] });
+
+					do {
+						second++;
+					} while (second < third && nums[second] == nums[second - 1]);
+					
+					third--;
+				}
+			}
+		}
+
+		return result;
+	}
+};
